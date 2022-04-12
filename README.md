@@ -1,1 +1,1 @@
-# Integrating-Deep-Learning-with-Statistical-Models-in-Neural-Coding
+# Integrating Statistical and Machine Learning Approaches to Identify Receptive Field Structure in Neural Populations
