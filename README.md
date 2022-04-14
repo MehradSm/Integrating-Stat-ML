@@ -5,7 +5,6 @@ This is the repository for our paper titled "Integrating Statistical and Machine
 The data includes local field potential (LFP) and spiking data simultaneously recorded from hippocampus CA1 region of a male Long Evans rat performing a spatial alternation task on a W-shaped track. This data is available publicly on [CRCNS](http://dx.doi.org/10.6080/K02N50G9) data sharing page. 
 
 ### Code
-The codes are divided to Statistical Methods developed in MATLAB and Machine Learning (ML) algorithms developed in Python.
-
-
-
+The codes are divided to Statistical Methods and Machine Learning (ML) algorithms as follow:  
+* The [statistical_models](https://github.com/MehradSm/Integrating-Stat-ML/tree/main/statistical_models) folder contains the required functions for the statistical analysis which are developed in MATLAB 
+* The [ml_models](https://github.com/MehradSm/Integrating-Stat-ML/tree/main/ml_models) folder includes four machine learning (ml) classifiers developed in Python. 
