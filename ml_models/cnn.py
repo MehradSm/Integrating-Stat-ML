@@ -188,7 +188,6 @@ print('Fitting model...')
 model.fit(X_train, y_train, batch_size=128, epochs=20, validation_split=0.1, verbose=1)
 
 score, acc = model.evaluate(X_test, y_test, batch_size=10)
-label_ml = model.predict(X_test, batch_size=10)
 
 print('Test score:', score)
 print('Test accuracy:', acc)
