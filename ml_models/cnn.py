@@ -170,7 +170,7 @@ def CNN(timesteps, data_dim):
                   metrics=['accuracy'])
     return model
 
-##################################### Implementation #####################################
+##################################### Main #####################################
 X_train, y_train, X_test, y_test = load_data()
 
 timesteps = X_train.shape[1]
