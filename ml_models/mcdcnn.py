@@ -7,8 +7,8 @@ import tensorflow.keras as keras
 from sklearn.preprocessing import normalize
 
 ##################################### Loading Data #####################################
-# Change this part for your machine
-
+# Change this part for your machine and data
+ 
 # 1. Spike trains for different categories, and for train and test
 input_file_spike_unf_train = 'Data/spikeTrain_unf.csv'
 input_file_spike_pos_train = 'Data/spikeTrain_pos.csv'
