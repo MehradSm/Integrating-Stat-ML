@@ -175,6 +175,7 @@ X_train, y_train, X_test, y_test = load_data()
 
 timesteps = X_train.shape[1]
 data_dim = X_train.shape[2]
+
 # One-Hot encoding for categorical vaiables
 y_train = keras.utils.to_categorical(y_train)
 y_test = keras.utils.to_categorical(y_test)
