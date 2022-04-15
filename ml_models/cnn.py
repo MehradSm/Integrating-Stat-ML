@@ -182,6 +182,8 @@ y_test = keras.utils.to_categorical(y_test)
 
 model = CNN(timesteps, data_dim)
 
+model.summary()
+
 print('Fitting model...')
 hist = model.fit(X_train, y_train, batch_size=128, epochs=20, validation_split=0.1, verbose=1)
 
