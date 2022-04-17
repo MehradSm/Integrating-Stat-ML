@@ -39,7 +39,7 @@ s = 0.4; % Tension parameter
 lag = 200; 
 
 % Construct spline matrix
-HistSpl = ModifiedCardinalSpline(lag,c_pt,s);
+HistSpl = ModifiedCardinalSplineHist(lag,c_pt,s);
 
 % Design matrix for multiplicative history model
 Hist = zeros(length(spike)-lag,lag);
@@ -70,13 +70,13 @@ idx_c=find(arm==0);idx_r=find(arm==1);idx_l=find(arm==-1);
 
 % Design matrix for lin-positon
 mtx_posc = zeros(size(lin_pos,1),num_c_ptsc);
-mtx_posc(idx_c,:) = ModifiedCardinalSpline_pos(lin_pos(arm==0),c_pt_posc,s);
+mtx_posc(idx_c,:) = ModifiedCardinalSplinePos(lin_pos(arm==0),c_pt_posc,s);
 
 mtx_posr = zeros(size(lin_pos,1),num_c_ptsr);
-mtx_posr(idx_r,:) = ModifiedCardinalSpline_pos(lin_pos(arm==1),c_pt_posr,s);
+mtx_posr(idx_r,:) = ModifiedCardinalSplinePos(lin_pos(arm==1),c_pt_posr,s);
 
 mtx_posl = zeros(size(lin_pos,1),num_c_ptsl);
-mtx_posl(idx_l,:) = ModifiedCardinalSpline_pos(lin_pos(arm==-1),c_pt_posl,s);
+mtx_posl(idx_l,:) = ModifiedCardinalSplinePos(lin_pos(arm==-1),c_pt_posl,s);
 
 mtx_pos = [mtx_posc ,mtx_posl , mtx_posr];
 
