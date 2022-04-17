@@ -1,7 +1,9 @@
-%% Point Process-GLM Model
+% This script includes loading and preprocessing data and implementing point process GLM model on data
+
 
 close all;clear;clc; 
-%%  Load data 
+%%  
+%########################### Data Preprocessing #############################
 
 % Change this for your machine and data 
 
@@ -13,22 +15,23 @@ time = load('Data/3-2-7-4/time.mat');
 arm = load('Data/3-2-7-4/arm_name.mat');
 phi = load('Data/3-2-7-4/phase.mat');
 
-% Data preprocessing
+
 time = time.struct.time;arm = arm.struct.arm_name';
 lin_pos = lin_pos.struct.linear_position2';
 speed = speed.struct.speed';
-
 direction = direction.struct.head_direction';
 spike = spike.struct.is_spike';
 phi = phi';
 
 lin_pos(isnan(lin_pos))=0;speed(isnan(speed))=0;arm(isnan(arm))=0;
 direction(isnan(direction))=0;spike = double(spike);
-%% Null Model
+%% 
+%############################### Null Model ################################
 mtx_nll = ones(size(spike,1),1);
 [b_n,dev_n,stat_n] = glmfit(mtx_nll,spike,'poisson','constant','off');
 yhat_nl = exp(b_n.*mtx_nll);
-%% History Component 
+%% 
+%############################# History Model ###############################
 
 % Basis function (Spline) parameters
 c_pt = 0:20:200; % Control points
@@ -49,7 +52,8 @@ mtx_hist = Hist*HistSpl;
 % GLM fit 
 [b_hist ,dev_hist, stat_hist] = glmfit(mtx_hist,y,'poisson');
 [yhat_hist1,ylo_hist1,yhi_hist1] = glmval(b_hist,HistSpl,'log',stat_hist);
-%% Linearized Position
+%% 
+%########################## Linearized Position ############################
 
 % Divide linear position for center, right, and left arms in the W-track
 pos_c=lin_pos(arm==0);pos_r=lin_pos(arm==1);pos_l=lin_pos(arm==-1);
@@ -79,7 +83,8 @@ mtx_pos = [mtx_posc ,mtx_posl , mtx_posr];
 % GLM fit
 [b_pos,dev_pos,stat_pos] = glmfit(mtx_pos,spike,'poisson');
 [yhat_pos,ylo_pos,yhi_pos] = glmval(b_pos,mtx_pos,'log',stat_pos);
-%% Lin-Position, Speed
+%% 
+%############################# Lin-Pos, Speed ###############################
 
 % Design matrix for lin-positon and speed
 thresholdSpd = 2;idx = find(speed>=thresholdSpd); % Setting threshold for speed
@@ -88,7 +93,8 @@ mtx_posspd = mtx_pos(idx,:);
 % GLM fit 
 [b_posspd,dev_posspd,stat_posspd] = glmfit(mtx_posspd,spike(idx),'poisson');
 [yhat_posspd,ylo_posspd,yhi_posspd] = glmval(b_posspd,mtx_posspd,'log',stat_posspd);
-%% Lin-Position, Direction
+%% 
+%########################### Lin-Pos, Direction #############################
 
 % Defining direction on the linearized track 
 direction = diff(lin_pos);
@@ -100,7 +106,8 @@ mtx_posdir = [mtx_pos(2:end,:).*direction(:,1),mtx_pos(2:end,:).*direction(:,2)]
 % GLM Fit
 [b_posdir,dev_posdir,stat_posdir] = glmfit(mtx_posdir,spikee,'poisson');
 [yhat_posdir,ylo_posdir,yhi_posdir] = glmval(b_posdir,mtx_posdir,'log',stat_posdir);
-%% Lin-Position,Phase 
+%% 
+%############################ Lin-Pos, Phase ###############################
 
 % Indicator fundtion on theta phase 
 ind_phase = [];numIndicators=5;
@@ -118,7 +125,8 @@ end
 % GLM fit 
 [b_posphi,dev_posphi,stat_posphi] = glmfit(mtx_posphi,spike,'poisson');
 [yhat_posphi,ylo_posphi,yhi_posphi] = glmval(b_posphi,mtx_posphi,'log',stat_posphi);
-%% Lin-Position, Phase, Speed
+%% 
+%######################### Lin-Pos, Phase, Speed ###########################
 
 % Design matrix for lin-pos, theta precession, and speed
 thresholdSpd = 2; idx = find(speed>=thresholdSpd); % Setting threshold for speed
@@ -127,7 +135,8 @@ mtx_posphispd = mtx_posphi(idx,:);
 % GLM fit
 [b_posphispd,dev_posphispd,stat_posphispd] = glmfit(mtx_posphispd,spike(idx),'poisson');
 [yhat_posphispd,ylo_posphispd,yhi_posphispd] = glmval(b_posphispd,mtx_posphispd,'log',stat_posphispd);
-%% Lin-Position, Phase, Speed, Direction
+%% 
+%#################### Lin-Pos, Phase, Speed, Direction ######################
 
 % Defining direction on the linearized track 
 direction = diff(lin_pos);
@@ -145,8 +154,10 @@ mtx_posphispddir = [mtx_posphispd.*dir(:,1),mtx_posphispd.*dir(:,2)];
 % GLM fit
 [b_posphispddir,dev_posphispddir,stat_posphispddir] = glmfit(mtx_posphispddir,spikee(idxx),'poisson');
 [yhat_posphispddir,ylo_posphispddir,yhi_posphispddir] = glmval(b_posphispddir,mtx_posphispddir,'log',stat_posphispddir);
-%% Full: Lin-Position, Phase, Speed, Direction, History
+%% 
+%############################### Full Model #################################
 
+% Full: Lin-Pos, Phase, Speed, Direction, History
 
 spdd = speed(lag+2:end);
 spk = spike(lag+2:end);
@@ -159,7 +170,8 @@ mtx_full = mtx_posphidirhist(spdd>=thresholdSpd,:);
 % GLM fit
 [b_full,dev_full,stat_full] = glmfit(mtx_full,spk(spdd>=thresholdSpd),'poisson');
 [yhat_full,ylo_full,yhi_full] = glmval(b_full,mtx_full,'log',stat_full);
-%% Chi-Squre Test
+%% 
+%############################ Chi-Squre Test ################################
  
 chi_h = dev_n-dev_hist; p_hist = 1-chi2cdf(chi_h,length(b_hist)-1);
 chi_p = dev_n-dev_pos; p_pos = 1-chi2cdf(chi_p,length(b_pos)-1);
