@@ -1,4 +1,4 @@
-function [spline] = ModifiedCardinalSpline_pos(data,cpt,s)
+function [spline] = ModifiedCardinalSplinePos(data,cpt,s)
 
 spline = zeros(length(data),length(cpt));
 
