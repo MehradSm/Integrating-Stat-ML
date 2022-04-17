@@ -8,7 +8,7 @@ import tensorflow.keras as keras
 from load_data import preprocessingData
 
 ##################################### Building Model #####################################
-    ''' 
+''' 
     Reference
     ----------
     @article{IsmailFawaz2018deep,
@@ -20,7 +20,7 @@ from load_data import preprocessingData
         number                   = {4},
         pages                    = {917--963},
         }
-    '''
+'''
 
 def MCDCNN(timesteps, data_dim):
     print('Creating model...')
