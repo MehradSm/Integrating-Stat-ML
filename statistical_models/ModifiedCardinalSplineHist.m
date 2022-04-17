@@ -1,4 +1,4 @@
-function [HistSpl] = ModifiedCardinalSpline(lag,c_pt,s)
+function [HistSpl] = ModifiedCardinalSplineHist(lag,c_pt,s)
 
 HistSpl = zeros(lag,length(c_pt));
 %for each 1 ms timepoint, calculate the corresponding row of the glm input matrix
