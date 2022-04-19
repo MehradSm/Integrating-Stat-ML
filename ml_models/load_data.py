@@ -131,7 +131,7 @@ def preprocessingData():
     df_label = pd.read_csv(input_file_label, header=None)
     df_label_test = pd.concat([df_label_test, df_label[204:]], axis=0, ignore_index=True)
 
-    # Normalize the feature space
+    # Normalizing the feature space
     spike_test = np.array(df_spike_test.values)
     pos_test = np.array(df_pos_test.values)
     pos_test = normalize(pos_test)
