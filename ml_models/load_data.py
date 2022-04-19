@@ -81,7 +81,7 @@ def preprocessingData():
     df_direction_train = df_direction_train.reindex(idx)
     df_label_train = df_label_train.reindex(idx)
 
-    # Normalize the feature space
+    # Normalizing the feature space
     spike_train = np.array(df_spike_train.values)
     pos_train = np.array(df_pos_train.values)
     pos_train = normalize(pos_train)
